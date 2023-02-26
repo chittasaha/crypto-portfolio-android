@@ -1,2 +1,2 @@
-# crypto-portfolio
-React Native app for tracking Crypto investment portfolio
+# crypto-portfolio-android
+Android implementation of Crypto Portfolio. Using Jetpack Compose UI 
