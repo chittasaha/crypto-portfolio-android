@@ -62,15 +62,6 @@ class MainActivity : ComponentActivity() {
                             Surface(modifier = Modifier.padding(paddingValues = values)) {
                                 CoinList()
                             }
-                            /*LazyColumn(contentPadding = values) {
-                                item {
-                                    ImageCard(
-                                        title = "Bacon ipsum",
-                                        description = "Bacon ipsum dolor amet pork shankle beef andouille ball tip. Meatball corned beef swine, strip steak bacon jerky doner tongue biltong pork loin drumstick sausage hamburger burgdoggen.",
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                }
-                            }*/
                         }
                     )
                 }
