@@ -1,5 +1,6 @@
 package com.technobees.crypfolio.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,32 +14,60 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.material.*
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel;
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.technobees.crypfolio.data.CryptoCoin
 import com.technobees.crypfolio.ui.viewmodel.CoinListViewModel
 import androidx.compose.material3.Text as MText
-import com.technobees.crypfolio.ui.theme.Color as MyThemeColor;
-import androidx.compose.material.pullrefresh.*;
+import com.technobees.crypfolio.ui.theme.Color as MyThemeColor
+import androidx.compose.material.pullrefresh.*
+import androidx.compose.ui.graphics.Color
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun CoinList(){
     val viewModel = viewModel<CoinListViewModel>()
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.coins.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val pullRefreshState = rememberPullRefreshState(refreshing = isLoading, { viewModel.loadPrices() })
 
+
     Box(Modifier.pullRefresh(pullRefreshState)) {
-        LazyColumn {
-            if (state.isEmpty()) {
-                item {
+        val headerModifier = Modifier
+            .fillMaxWidth(fraction = .25f)
+            .padding(all = 5.dp)
+
+
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp),) {
+            stickyHeader()
+            {
+                Row(
+                    modifier = Modifier
+                        .border(width = 1.dp, color = Color.White)
+                        //.background(color = Color.Green)
+                        .fillMaxWidth()
+                        .height(height = 35.dp)
+
+                ) {
+                    MText(text = "Coin", modifier = headerModifier)
+                    MText(text = "Amount", modifier = headerModifier)
+                    MText(text = "Price", modifier = headerModifier)
+                    MText(text = "Total", modifier = headerModifier)
+                    /*MText(text = "Change", modifier = headerModifier)
+                    MText(text = "MarketCapital",modifier = headerModifier)*/
+                }
+            }
+
+            /*
+            item {
+
+                if(state.isEmpty()) {
                     CircularProgressIndicator(
                         modifier = Modifier
                             .fillMaxSize()
                             .wrapContentSize(align = Alignment.Center)
                     )
                 }
-            }
+            }*/
             items(state) { coin: CryptoCoin ->
                 CoinDetail(coin = coin)
             }
@@ -55,14 +84,14 @@ fun CoinDetail(coin: CryptoCoin){
 
     Row(
         modifier = Modifier
-            .border(width = 1.dp, color = MyThemeColor.Green20)
-            .background(color = MyThemeColor.Green80)
+            //.border(width = 1.dp, color = MyThemeColor.Green20)
+            //.background(color = MyThemeColor.Green80)
             .fillMaxWidth()
             .height(height = 35.dp)
     ) {
         MText(text = coin.Name, modifier = rowModifier)
         MText(text = String.format("%.3f",coin.Price), modifier = rowModifier)
         MText(text = String.format("%.2f",coin.LastChangeIn24Hours), modifier = rowModifier)
-        MText(text = String.format("%.2f",coin.MarketCapital),modifier = rowModifier)
+        MText(text = String.format("%.3f",coin.MarketCapital/1000000000),modifier = rowModifier)
     }
 }

@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 
 class CoinListViewModel : ViewModel() {
 
-    private val _state = MutableStateFlow(emptyList<CryptoCoin>())
-    val state: StateFlow<List<CryptoCoin>>
-        get() = _state
+    private val _coins = MutableStateFlow(emptyList<CryptoCoin>())
+    val coins: StateFlow<List<CryptoCoin>>
+        get() = _coins
 
 
     private val _isLoading = MutableStateFlow(false)
@@ -25,9 +25,9 @@ class CoinListViewModel : ViewModel() {
 
     fun loadPrices(){
         viewModelScope.launch {
-            val coins = _cyptoService.getPrices(ids = "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin")
-            if(coins.isSuccessful){
-                _state.value = coins.body()!!.toList()
+            val response = _cyptoService.getPrices(ids = "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin")
+            if(response.isSuccessful){
+                _coins.value = response.body()!!.toList()
             }
         }
     }

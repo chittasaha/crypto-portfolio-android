@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         topBar = {
                             Material3SmallTopAppBar(
                                 title = {
-                                    Text(text = "My Crypto Portfolio")
+                                    Text(text = "Crypto Portfolio")
                                 },
                                 colors = TopAppBarDefaults.smallTopAppBarColors(
                                     containerColor = MaterialTheme.colorScheme.surfaceVariant,

@@ -7,10 +7,10 @@ data class CryptoCoin(
     val Name: String,
     @SerializedName("price")
     val Price: Float,
-    @SerializedName("base_price")
+    @SerializedName("base_currency")
     val BaseCurrency : String,
     @SerializedName("change_last_24_hours")
     val LastChangeIn24Hours : Float,
     @SerializedName("market_capital")
-    val MarketCapital : Float
+    val MarketCapital : Double
 )
