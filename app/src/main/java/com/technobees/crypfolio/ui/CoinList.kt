@@ -1,12 +1,14 @@
 package com.technobees.crypfolio.ui
 
+
+//import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.foundation.text.ClickableText
+//import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,6 +23,8 @@ import androidx.compose.material3.Text as MText
 import com.technobees.crypfolio.ui.theme.Color as MyThemeColor
 import androidx.compose.material.pullrefresh.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +41,7 @@ fun CoinList(){
             .padding(all = 5.dp)
 
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp),) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             stickyHeader()
             {
                 Row(
@@ -48,10 +52,24 @@ fun CoinList(){
                         .height(height = 35.dp)
 
                 ) {
-                    MText(text = "Coin", modifier = headerModifier)
-                    MText(text = "Amount", modifier = headerModifier)
-                    MText(text = "Price", modifier = headerModifier)
-                    MText(text = "Total", modifier = headerModifier)
+                    ClickableText(text = AnnotatedString("Coin"), modifier = headerModifier, onClick = { offset ->
+                            viewModel.sort(CryptoCoin::Name.name)
+                            //Log.d("ClickableText", "$offset -th character is clicked.")
+                    })
+                    //MText(text = "Amount", modifier = headerModifier)
+                    ClickableText(text = AnnotatedString("Price"), modifier = headerModifier, onClick = { offset ->
+                            viewModel.sort(CryptoCoin::Price.name)
+
+                    })
+                    ClickableText(text = AnnotatedString("MarketCapital"),modifier = headerModifier, onClick = {
+                        offset ->
+                        viewModel.sort(CryptoCoin::MarketCapital.name)
+                    })
+                    ClickableText(text = AnnotatedString("Change"),modifier = headerModifier, onClick = {
+                            offset ->
+                        viewModel.sort(CryptoCoin::LastChangeIn24Hours.name)
+                    })
+                    //MText(text = "Total", modifier = headerModifier)
                     /*MText(text = "Change", modifier = headerModifier)
                     MText(text = "MarketCapital",modifier = headerModifier)*/
                 }
@@ -91,7 +109,7 @@ fun CoinDetail(coin: CryptoCoin){
     ) {
         MText(text = coin.Name, modifier = rowModifier)
         MText(text = String.format("%.3f",coin.Price), modifier = rowModifier)
-        MText(text = String.format("%.2f",coin.LastChangeIn24Hours), modifier = rowModifier)
         MText(text = String.format("%.3f",coin.MarketCapital/1000000000),modifier = rowModifier)
+        MText(text = String.format("%.2f",coin.LastChangeIn24Hours), modifier = rowModifier)
     }
 }
