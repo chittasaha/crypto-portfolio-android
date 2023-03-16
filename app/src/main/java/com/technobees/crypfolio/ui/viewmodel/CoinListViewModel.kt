@@ -91,7 +91,7 @@ class CoinListViewModel : ViewModel() {
             _direction.value = "ASC"
         }
         else{
-            _direction.value = "ASC"
+            _direction.value = "DESC"
         }
 
         Log.d("Direction:", _direction.value)
