@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.technobees.crypfolio.data.CryptoCoin
+import com.technobees.crypfolio.data.GetTokensRequest
 import com.technobees.crypfolio.service.CryptoService
 import com.technobees.crypfolio.service.impl.ServiceBuilder
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,11 @@ class CoinListViewModel : ViewModel() {
     fun loadPrices(){
         viewModelScope.launch {
             Log.d("OrderBy", _orderBy.value)
-            val response = _cyptoService.getPrices(ids = "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin")
+            val ids = arrayOf("cardano","acala","altair","altura","astar","avalanche-2","centrifuge","coti",
+                "curve-dao-token","polkadot","efinity","ethereum","fantom","moonbeam","kilt-protocol","kintsugi",
+                "calamari-network","kusama","decentraland","moonriver","harmony","parallel-finance","the-sandbox","shiden",
+                "bitcoin","pha","interlay","litentry,nodle-network","origintrail","unique-network","polkadex","bifrost-native-coin")
+            val response = _cyptoService.getTokens(GetTokensRequest("eur", ids))
             //val response = _cyptoService.getPrices(ids = "cardano,acala")
             if(response.isSuccessful){
                 _coins.value = response.body()!!.toList().sortedByDescending { c -> c.MarketCapital }

@@ -3,11 +3,13 @@ package com.technobees.crypfolio.ui
 
 //import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -21,11 +23,15 @@ import com.technobees.crypfolio.data.CryptoCoin
 import com.technobees.crypfolio.ui.viewmodel.CoinListViewModel
 import androidx.compose.material3.Text as MText
 import androidx.compose.material.pullrefresh.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
@@ -130,6 +136,11 @@ fun CoinDetail(coin: CryptoCoin){
             .fillMaxWidth()
             .height(height = 35.dp)
     ) {
+        AsyncImage(
+            model = coin.IconUrl,
+            contentDescription = coin.Name,
+            modifier = Modifier.clip(CircleShape),
+            contentScale = ContentScale.Crop,)
         MText(text = coin.Name, modifier = rowModifier.weight(.25f))
         MText(text = String.format("%.3f",coin.Price), modifier = rowModifier.weight(.25f))
         MText(text = String.format("%.3fBn",coin.MarketCapital/1000000000),modifier = rowModifier.weight(.25f))
