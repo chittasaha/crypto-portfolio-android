@@ -6,7 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -30,6 +29,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
@@ -53,7 +53,7 @@ fun CoinList(){
                         .border(width = 1.dp, color = Color.White)
                         .fillMaxWidth()
                         .height(height = 35.dp)
-                        .padding(all = 5.dp)
+                        .padding(all = 3.dp)
 
                 ) {
                     val headerModifier = Modifier
@@ -96,7 +96,7 @@ fun CoinList(){
                         text = AnnotatedString("Change"),
                         modifier = headerModifier,
                         onClick = { offset ->
-                            viewModel.sort(CryptoCoin::LastChangeIn24Hours.name)
+                            viewModel.sort(CryptoCoin::PriceChangePercent24Hours.name)
                         },
                         style = headerTextStyle
                     )
@@ -136,14 +136,26 @@ fun CoinDetail(coin: CryptoCoin){
             .fillMaxWidth()
             .height(height = 35.dp)
     ) {
-        AsyncImage(
-            model = coin.IconUrl,
-            contentDescription = coin.Name,
-            modifier = Modifier.clip(CircleShape),
-            contentScale = ContentScale.Crop,)
-        MText(text = coin.Name, modifier = rowModifier.weight(.25f))
+
+        Box(
+            modifier = rowModifier.weight(.30f)
+        ) {
+            AsyncImage(
+                model = coin.IconUrl,
+                contentDescription = coin.Symbol,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .width(30.dp)
+                    .height(30.dp)
+                    .padding(3.dp),
+                contentScale = ContentScale.Crop,
+            )
+            MText(text = coin.Symbol.uppercase(), modifier = Modifier.align(
+                Alignment.CenterStart
+            ))
+        }
         MText(text = String.format("%.3f",coin.Price), modifier = rowModifier.weight(.25f))
         MText(text = String.format("%.3fBn",coin.MarketCapital/1000000000),modifier = rowModifier.weight(.25f))
-        MText(text = String.format("%.2f%s",coin.LastChangeIn24Hours, "%"), modifier = rowModifier.weight(.25f))
+        MText(text = String.format("%.2f%s",coin.PriceChangePercent24Hours, "%"), modifier = rowModifier.weight(.20f))
     }
 }

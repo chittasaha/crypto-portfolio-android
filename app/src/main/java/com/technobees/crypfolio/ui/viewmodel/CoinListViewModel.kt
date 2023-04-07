@@ -18,13 +18,13 @@ class CoinListViewModel : ViewModel() {
     val coins: StateFlow<List<CryptoCoin>>
         get() = _coins
 
-    private val _orderBy = MutableStateFlow(CryptoCoin::LastChangeIn24Hours.name)
+    private val _orderBy = MutableStateFlow(CryptoCoin::PriceChangePercent24Hours.name)
     private val _direction = MutableStateFlow("DESC")
 
     private val _isLoading = MutableStateFlow(false)
     var isLoading = _isLoading.asStateFlow()
 
-    private val _crptoServiceBaseUrl: String = "http://192.168.1.162:8080/"
+    private val _crptoServiceBaseUrl: String = "http://192.168.56.1:8080/"
     private val _cyptoService : CryptoService
         get() = ServiceBuilder.build(_crptoServiceBaseUrl).create(CryptoService::class.java)
 
@@ -67,7 +67,7 @@ class CoinListViewModel : ViewModel() {
                     _coins.value = _coins.value.sortedByDescending { c -> c.MarketCapital }
                 }
                 "LastChangeIn24Hours" -> {
-                    _coins.value = _coins.value.sortedByDescending { c -> c.LastChangeIn24Hours }
+                    _coins.value = _coins.value.sortedByDescending { c -> c.PriceChangePercent24Hours }
                 }
             }
 
@@ -84,7 +84,7 @@ class CoinListViewModel : ViewModel() {
                     _coins.value = _coins.value.sortedBy { c -> c.MarketCapital }
                 }
                 "LastChangeIn24Hours" -> {
-                    _coins.value = _coins.value.sortedBy { c -> c.LastChangeIn24Hours }
+                    _coins.value = _coins.value.sortedBy { c -> c.PriceChangePercent24Hours }
                 }
             }
         }
