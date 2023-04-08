@@ -24,19 +24,22 @@ class CoinListViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     var isLoading = _isLoading.asStateFlow()
 
-    private val _crptoServiceBaseUrl: String = "http://192.168.56.1:8080/"
+    //private val _crptoServiceBaseUrl: String = "http://192.168.56.1:8080/"
+    private val _crptoServiceBaseUrl: String = "https://api.coingecko.com/"
     private val _cyptoService : CryptoService
         get() = ServiceBuilder.build(_crptoServiceBaseUrl).create(CryptoService::class.java)
 
     fun loadPrices(){
         viewModelScope.launch {
             Log.d("OrderBy", _orderBy.value)
-            val ids = arrayOf("cardano","acala","altair","altura","astar","avalanche-2","centrifuge","coti",
+            /*val ids = arrayOf("cardano","acala","altair","altura","astar","avalanche-2","centrifuge","coti",
                 "curve-dao-token","polkadot","efinity","ethereum","fantom","moonbeam","kilt-protocol","kintsugi",
                 "calamari-network","kusama","decentraland","moonriver","harmony","parallel-finance","the-sandbox","shiden",
                 "bitcoin","pha","interlay","litentry,nodle-network","origintrail","unique-network","polkadex","bifrost-native-coin")
-            val response = _cyptoService.getTokens(GetTokensRequest("eur", ids))
+            val response = _cyptoService.getTokens(GetTokensRequest("eur", ids))*/
             //val response = _cyptoService.getPrices(ids = "cardano,acala")
+
+            val response = _cyptoService.getTokens("eur", "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin")
             if(response.isSuccessful){
                 _coins.value = response.body()!!.toList().sortedByDescending { c -> c.MarketCapital }
             }
