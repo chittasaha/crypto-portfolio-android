@@ -10,6 +10,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.InlineTextContent
+import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -25,11 +27,9 @@ import androidx.compose.material.pullrefresh.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.*
 
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
@@ -140,19 +140,33 @@ fun CoinDetail(coin: CryptoCoin){
         Box(
             modifier = rowModifier.weight(.30f)
         ) {
-            AsyncImage(
-                model = coin.IconUrl,
-                contentDescription = coin.Symbol,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .width(30.dp)
-                    .height(30.dp)
-                    .padding(3.dp),
-                contentScale = ContentScale.Crop,
+
+            val annotedString = buildAnnotatedString {
+                appendInlineContent("symbol_img")
+                append(coin.Symbol.uppercase())
+            }
+
+            val inlineContentMap = mapOf(
+                "symbol_img" to InlineTextContent(
+                    Placeholder(20.sp, 20.sp, PlaceholderVerticalAlign.Center)
+                ){
+                    AsyncImage(
+                        model = coin.IconUrl,
+                        contentDescription = coin.Symbol,
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .width(30.dp)
+                            .height(30.dp)
+                            .padding(3.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
             )
-            MText(text = coin.Symbol.uppercase(), modifier = Modifier.align(
-                Alignment.CenterStart
-            ))
+
+
+            MText(annotedString, modifier = Modifier.align(
+                Alignment.CenterStart), inlineContent = inlineContentMap
+            )
         }
         MText(text = String.format("%.3f",coin.Price), modifier = rowModifier.weight(.25f))
         MText(text = String.format("%.3fBn",coin.MarketCapital/1000000000),modifier = rowModifier.weight(.25f))
