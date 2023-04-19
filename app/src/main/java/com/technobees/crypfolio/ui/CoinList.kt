@@ -3,6 +3,7 @@ package com.technobees.crypfolio.ui
 
 //import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -26,16 +27,19 @@ import androidx.compose.material3.Text as MText
 import androidx.compose.material.pullrefresh.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.*
 
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
+@Preview
 fun CoinList(){
     val viewModel = viewModel<CoinListViewModel>()
     val state by viewModel.coins.collectAsState()
@@ -45,19 +49,20 @@ fun CoinList(){
 
     Box(Modifier.pullRefresh(pullRefreshState)) {
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(0.5.dp)) {
             stickyHeader()
             {
                 Row(
                     modifier = Modifier
-                        .border(width = 1.dp, color = Color.White)
+                        //.border(width = 1.dp, color = Color.White)
                         .fillMaxWidth()
-                        .height(height = 35.dp)
-                        .padding(all = 3.dp)
+                        //.height(height = 100.dp)
+                        //.padding(all = 3.dp)
 
                 ) {
                     val headerModifier = Modifier
                         .fillMaxWidth(fraction = .25f)
+                        .background(Color.Gray, RectangleShape)
                         .weight(.25f)
 
                     val headerTextStyle = TextStyle(
@@ -124,21 +129,22 @@ fun CoinList(){
 }
 @Composable
 fun CoinDetail(coin: CryptoCoin){
-    val rowModifier = Modifier
+    val cellModifier = Modifier
         .fillMaxWidth(fraction = .25f)
-        .padding(all = 5.dp)
+        .padding(all = 3.dp)
+        //.border(1.dp,Color.Red, RectangleShape)
 
 
     Row(
         modifier = Modifier
-            .border(width = 1.dp, color = Color.White)
+            .border(width = 1.dp, color = Color.Gray)
             //.background(color = MyThemeColor.Green80)
             .fillMaxWidth()
             .height(height = 35.dp)
     ) {
 
         Box(
-            modifier = rowModifier.weight(.30f)
+            modifier = cellModifier.weight(.25f)
         ) {
 
             val annotedString = buildAnnotatedString {
@@ -168,8 +174,8 @@ fun CoinDetail(coin: CryptoCoin){
                 Alignment.CenterStart), inlineContent = inlineContentMap
             )
         }
-        MText(text = String.format("%.3f",coin.Price), modifier = rowModifier.weight(.25f))
-        MText(text = String.format("%.3fBn",coin.MarketCapital/1000000000),modifier = rowModifier.weight(.25f))
-        MText(text = String.format("%.2f%s",coin.PriceChangePercent24Hours, "%"), modifier = rowModifier.weight(.20f))
+        MText(text = String.format("%.3f",coin.Price), modifier = cellModifier.weight(.25f))
+        MText(text = String.format("%.3fBn",coin.MarketCapital/1000000000),modifier = cellModifier.weight(.25f))
+        MText(text = String.format("%.2f%s",coin.PriceChangePercent24Hours, "%"), modifier = cellModifier.weight(.25f))
     }
 }

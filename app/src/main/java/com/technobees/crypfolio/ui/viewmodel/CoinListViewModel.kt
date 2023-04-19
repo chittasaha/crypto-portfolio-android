@@ -30,6 +30,12 @@ class CoinListViewModel : ViewModel() {
         get() = ServiceBuilder.build(_crptoServiceBaseUrl).create(CryptoService::class.java)
 
     fun loadPrices(){
+        /*_coins.value = listOf(
+            CryptoCoin("BTC", "BTC", "BTC","https://assets.kraken.com/marketing/web/icons/sym-eur_colored.svg?e=www.kraken.com",121.0f, 1202121.0f,1, 1f,1f,1f,1f,
+            1f,1f,232131f,312321f,3232f,323232f,1f,"",1f,1f,""),
+            CryptoCoin("EUR", "EUR", "EUR","https://assets.kraken.com/marketing/web/icons/sym-eur_colored.svg?e=www.kraken.com",121.0f, 1202121.0f,1, 1f,1f,1f,1f,
+                1f,1f,232131f,312321f,3232f,323232f,1f,"",1f,1f,"")
+        )*/
         viewModelScope.launch {
             Log.d("OrderBy", _orderBy.value)
             /*val ids = arrayOf("cardano","acala","altair","altura","astar","avalanche-2","centrifuge","coti",
@@ -69,7 +75,7 @@ class CoinListViewModel : ViewModel() {
                 "MarketCapital" -> {
                     _coins.value = _coins.value.sortedByDescending { c -> c.MarketCapital }
                 }
-                "LastChangeIn24Hours" -> {
+                "PriceChangePercent24Hours" -> {
                     _coins.value = _coins.value.sortedByDescending { c -> c.PriceChangePercent24Hours }
                 }
             }
@@ -86,7 +92,7 @@ class CoinListViewModel : ViewModel() {
                 "MarketCapital" -> {
                     _coins.value = _coins.value.sortedBy { c -> c.MarketCapital }
                 }
-                "LastChangeIn24Hours" -> {
+                "PriceChangePercent24Hours" -> {
                     _coins.value = _coins.value.sortedBy { c -> c.PriceChangePercent24Hours }
                 }
             }
