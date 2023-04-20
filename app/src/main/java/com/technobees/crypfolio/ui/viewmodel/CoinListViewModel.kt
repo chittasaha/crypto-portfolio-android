@@ -45,7 +45,7 @@ class CoinListViewModel : ViewModel() {
             val response = _cyptoService.getTokens(GetTokensRequest("eur", ids))*/
             //val response = _cyptoService.getPrices(ids = "cardano,acala")
 
-            val response = _cyptoService.getTokens("eur", "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin")
+            val response = _cyptoService.getTokens("eur", "cardano,acala,altair,altura,astar,avalanche-2,centrifuge,coti,curve-dao-token,polkadot,efinity,ethereum,fantom,moonbeam,kilt-protocol,kintsugi,calamari-network,kusama,decentraland,moonriver,harmony,parallel-finance,the-sandbox,shiden,bitcoin,pha,interlay,litentry,nodle-network,origintrail,unique-network,polkadex,bifrost-native-coin,energy-web-token")
             if(response.isSuccessful){
                 _coins.value = response.body()!!.toList().sortedByDescending { c -> c.MarketCapital }
             }
